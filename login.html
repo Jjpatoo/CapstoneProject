@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+
+    <!-- Font Awesome -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+rel="stylesheet"
+/>
+<!-- MDB -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
+rel="stylesheet"
+/>
+<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"></script>
+
+    <title>
+PatStore login
+    </title>
+    <link rel="icon" type="image/png" href="images/LLicon.png">
+
+</head>
+<body>
+<section class="vh-100" style="background-image: url(images/hero.webp);">
+    <div class="container py-5 h-80">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+  
+              <h3 class="mb-5">Sign in</h3>
+  
+              <div class="form-outline mb-4">
+                <input type="email" id="typeEmailX-2" class="form-control form-control-lg" />
+                <label class="form-label" for="typeEmailX-2">Email</label>
+              </div>
+  
+              <div class="form-outline mb-4">
+                <input type="password" id="typePasswordX-2" class="form-control form-control-lg" />
+                <label class="form-label" for="typePasswordX-2">Password</label>
+              </div>
+  
+              <!-- Checkbox -->
+              <div class="form-check d-flex justify-content-start mb-4">
+                <input class="form-check-input" type="checkbox" value="" id="form1Example3" />
+                <label class="form-check-label" for="form1Example3"> Remember password </label>
+              </div>
+
+              <!-- Checkbox -->
+              <div class="form-check d-flex justify-content-start mb-4">
+                <input class="form-check-input" type="checkbox" value="" id="form1Example3" />
+                <label class="form-check-label" for="form1Example3"> I accept the Terms of Use & Privacy Policy.</label>
+              </div>
+  
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+  
+              <hr class="my-4">
+  
+              <button class="btn btn-lg btn-block btn-primary" style="background-color: #10d2b8;"
+                type="submit"><i class="fab fa-google me-2"></i> Sign in with google</button>
+              <button class="btn btn-lg btn-block btn-primary mb-2" style="background-color: #3b5998;"
+                type="submit"><i class="fab fa-facebook-f me-2"></i>Sign in with facebook</button>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBIMvpbPpADLJJMq0iKxYVCxTsaPyCaxQg",
+    authDomain: "myeshophosting.firebaseapp.com",
+    projectId: "myeshophosting",
+    storageBucket: "myeshophosting.appspot.com",
+    messagingSenderId: "564148659105",
+    appId: "1:564148659105:web:d9197197f5ff46c8c2e1e0",
+    measurementId: "G-YHR7VR1N1C"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+  <script>
+    firebase.database.enableLogging(true);
+      document.addEventListener("DOMContentLoaded", function () {
+  const loginButton = document.querySelector(".btn-primary");
+  loginButton.addEventListener("click", function () {
+    const email = document.querySelector("#typeEmailX-2").value;
+    const password = document.querySelector("#typePasswordX-2").value;
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // User is signed in. You can redirect or perform other actions.
+        const user = userCredential.user;
+        console.log("User signed in:", user);
+
+        // Database operations should be here
+        const database = firebase.database();
+        const databaseRef = database.ref("users"); // Reference to the "users" node
+        const data = {
+          username: "Joshua Patroba",
+          email: "abcd1234@gmail.com",
+        };
+
+        // Set data to a specific location in the database
+        databaseRef.push(data);
+
+        // Read data once
+        databaseRef.once("value")
+          .then((snapshot) => {
+            const data = snapshot.val();
+            console.log(data);
+          })
+          .catch((error) => {
+            console.error("Error reading data: " + error.message);
+          });
+      })
+      .catch((error) => {
+        // Handle errors, e.g., display an error message.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error("Error:", errorCode, errorMessage);
+      });
+  });
+});
+
+
+  </script>
+  
+  <!-- MDB -->
+<script
+type="text/javascript"
+src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
+></script>
+</body>
+</html>
